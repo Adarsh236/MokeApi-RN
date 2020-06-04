@@ -1,7 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import axios from 'axios';
 import {FlatList, View, Text, ToastAndroid} from 'react-native';
 
+function Toast(prop) {
+  ToastAndroid.showWithGravity(
+    prop.text,
+    ToastAndroid.SHORT,
+    ToastAndroid.CENTER,
+  );
+}
 export default class PersonList extends React.Component {
   state = {
     isLoading: true,
@@ -16,6 +23,7 @@ export default class PersonList extends React.Component {
       )
       .then((res) => {
         const persons = res.data.results;
+        console.log(persons);
         this.setState({
           isLoading: false,
           persons: [...persons],
@@ -31,7 +39,7 @@ export default class PersonList extends React.Component {
         this.setState({intenetProblem: true});
         ToastAndroid.showWithGravity(
           'Waiting For The Internet',
-          ToastAndroid.SHORT,
+          ToastAndroid.LONG,
           ToastAndroid.CENTER,
         );
       });
@@ -40,30 +48,29 @@ export default class PersonList extends React.Component {
   render() {
     if (this.state.intenetProblem) {
       return (
-        <View>
+        <View style={{flex: 1, padding: 24}}>
           <Text>Error: No Internet...</Text>
         </View>
       );
     } else if (this.state.isLoading) {
       return (
-        <View>
+        <View style={{flex: 1, padding: 24}}>
           <Text>Loading...</Text>
         </View>
       );
     } else {
       return (
         <View style={{flex: 1, padding: 24}}>
-          {
-            <FlatList
-              data={this.state.persons}
-              keyExtractor={({id}, index) => id}
-              renderItem={({item}) => (
-                <Text>
-                  Name: {item.name}, height: {item.height}, mass: {item.mass}
-                </Text>
-              )}
-            />
-          }
+          <FlatList
+            data={this.state.persons}
+            keyExtractor={({id}, index) => id}
+            renderItem={({item}) => (
+              <Text>
+                NO: {item.id}) NAME: {item.name}, HEIGHT: {item.height}, MASS:{' '}
+                {item.mass}
+              </Text>
+            )}
+          />
         </View>
       );
     }

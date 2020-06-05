@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PersonList snapShot 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+      "padding": 24,
+    }
+  }
+>
+  <Text>
+    Loading...
+  </Text>
+</View>
+`;

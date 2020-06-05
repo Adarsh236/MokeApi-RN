@@ -6,7 +6,9 @@ console.log('Hi from React Native');
 const Dashboard = ({navigation}) => {
   return (
     <View style={styles.dashboardArea}>
-      <Text style={{fontSize: 25}}>Star war Character list</Text>
+      <Text style={{fontSize: 25, color: '#FFFFFF'}}>
+        Star war Character list
+      </Text>
       <Button
         onPress={() => navigation.navigate('PersonList')}
         title="GET STARTED"
@@ -25,5 +27,6 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#000000',
   },
 });

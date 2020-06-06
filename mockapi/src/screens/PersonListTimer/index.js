@@ -3,8 +3,9 @@ import axios from 'axios';
 import {FlatList, View, Text, ToastAndroid} from 'react-native';
 import Toast from 'react-native-tiny-toast';
 //import PersonListView from '../PersonListView';
+import {NetworkConsumer} from 'react-native-offline';
 
-export default class PersonList extends React.Component {
+export default class PersonListTimer extends React.Component {
   state = {
     intenetStatus: 'None',
     persons: [],
@@ -64,9 +65,6 @@ export default class PersonList extends React.Component {
     clearInterval(this.intervalID);
   }
 
-  /* render() {
-    return <PersonListView personListView={this.state.intenetStatus} />;
-  } */
   render() {
     switch (this.state.intenetStatus) {
       case 'None': {

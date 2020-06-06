@@ -1,9 +1,9 @@
 import React from 'react';
 import {Button, View, Text, StyleSheet} from 'react-native';
-
+import {NetworkConsumer} from 'react-native-offline';
 console.log('Hi from React Native');
 
-const Dashboard = ({navigation}) => {
+const ex = ({navigation}) => {
   return (
     <View style={styles.dashboardArea}>
       <Text style={{fontSize: 25, color: '#FFFFFF'}}>
@@ -15,11 +15,20 @@ const Dashboard = ({navigation}) => {
         color="#006400"
         style={styles.startButton}
       />
+      <NetworkConsumer>
+        {({isConnected}) =>
+          isConnected ? (
+            <Text>Downloading</Text>
+          ) : (
+            <Text>Downloading images is disabled since you are offline</Text>
+          )
+        }
+      </NetworkConsumer>
     </View>
   );
 };
 
-export default Dashboard;
+export default ex;
 
 const styles = StyleSheet.create({
   dashboardArea: {

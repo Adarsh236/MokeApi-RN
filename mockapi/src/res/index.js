@@ -1,3 +1,3 @@
-import * as color from './colors';
+import styleHelper from './styleHelper';
 
-export {color};
+export {styleHelper};

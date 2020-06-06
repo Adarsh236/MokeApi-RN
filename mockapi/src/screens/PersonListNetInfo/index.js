@@ -3,23 +3,18 @@ import axios from 'axios';
 import {FlatList, View, Text} from 'react-native';
 import Toast from 'react-native-tiny-toast';
 import {NetworkConsumer} from 'react-native-offline';
-import {
-  checkInternetConnection,
-  offlineActionCreators,
-} from 'react-native-offline';
 
 export default class PersonListNetInfo extends React.Component {
   state = {
-    status: 'None',
+    status: 'none',
     persons: [],
-    error: 'None',
+    error: 'none',
     Old_URL:
       'https://70c7859a-69e5-4de6-aa70-e6c14e5bd8e4.mock.pstmn.io/starwar/people',
     New_URL: 'https://swapi.dev/api/people/',
   };
 
   getResultFromAxios() {
-    console.log('a------1');
     axios
       .get(this.state.New_URL, {timeout: 1000})
       .then((res) => {
@@ -29,11 +24,11 @@ export default class PersonListNetInfo extends React.Component {
           persons: [...persons],
         });
         this.showToast();
-        console.log('c------2');
       })
       .catch((e) => {
-        console.log('c------3');
-        this.setState({status: 'error', error: e.message});
+        if (e.message === 'Network Error')
+          this.setState({status: 'offline', error: e.message});
+        else this.setState({status: 'error', error: e.message});
         this.showToast();
       });
   }
@@ -44,8 +39,12 @@ export default class PersonListNetInfo extends React.Component {
         Toast.showSuccess('Successfully Loaded');
         break;
       }
-      case 'None': {
+      case 'none': {
         Toast.show('Loading...');
+        break;
+      }
+      case 'offline': {
+        Toast.show('You are offline.');
         break;
       }
       default:
@@ -55,18 +54,6 @@ export default class PersonListNetInfo extends React.Component {
 
   async componentDidMount() {
     this.getResultFromAxios();
-    this.internetChecker();
-    console.log('com------4');
-  }
-
-  async internetChecker(dispatch) {
-    const isConnected = await checkInternetConnection();
-    const {connectionChange} = offlineActionCreators;
-    // Dispatching can be done inside a connected component, a thunk (where dispatch is injected), saga, or any sort of middleware
-    // In this example we are using a thunk
-    console.log('------99');
-    console.log(isConnected);
-    //dispatch(connectionChange(isConnected));
   }
 
   render() {
@@ -93,6 +80,14 @@ export default class PersonListNetInfo extends React.Component {
               {({isConnected}) =>
                 isConnected ? (
                   <View>
+                    <Text
+                      style={{
+                        fontSize: 25,
+                        color: '#008000',
+                        textAlign: 'center',
+                      }}>
+                      You are online.
+                    </Text>
                     <FlatList
                       data={this.state.persons}
                       extraData={this.state.persons}
@@ -106,9 +101,27 @@ export default class PersonListNetInfo extends React.Component {
                     />
                   </View>
                 ) : (
-                  <Text style={{fontSize: 25, color: '#FFFFFF'}}>
-                    You are offline.
-                  </Text>
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: 25,
+                        color: '#FF0000',
+                        textAlign: 'center',
+                      }}>
+                      You are offline.
+                    </Text>
+                    <FlatList
+                      data={this.state.persons}
+                      extraData={this.state.persons}
+                      keyExtractor={({id}, index) => id}
+                      renderItem={({item}) => (
+                        <Text>
+                          NAME: {item.name}, HEIGHT: {item.height}, MASS:{' '}
+                          {item.mass}
+                        </Text>
+                      )}
+                    />
+                  </View>
                 )
               }
             </NetworkConsumer>

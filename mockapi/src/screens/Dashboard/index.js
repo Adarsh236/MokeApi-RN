@@ -1,10 +1,6 @@
 import React from 'react';
 import {Button, View, Text, StyleSheet, SafeAreaView} from 'react-native';
 import {NetworkConsumer} from 'react-native-offline';
-import {
-  checkInternetConnection,
-  offlineActionCreators,
-} from 'react-native-offline';
 
 console.log('Dashbroad');
 
